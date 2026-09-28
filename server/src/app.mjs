@@ -107,7 +107,8 @@ export function maakApp({ db, mailer, boeken, basisUrl, siteMap, vertrouwProxy =
       const { email, terug } = await leesJson(req);
       const adres = typeof email === 'string' ? email.trim().toLowerCase() : '';
       if (!EMAIL.test(adres)) throw new Fout(400, 'Vul een geldig e-mailadres in.');
-      const ip = (vertrouwProxy && String(req.headers['x-forwarded-for'] ?? '').split(',')[0].trim()) || req.socket.remoteAddress || '';
+      // Achter nginx is het laatste adres in X-Forwarded-For het echte; eerdere kan de bezoeker zelf invullen.
+      const ip = (vertrouwProxy && String(req.headers['x-forwarded-for'] ?? '').split(',').pop().trim()) || req.socket.remoteAddress || '';
       if (!perIp(ip) || !perEmail(adres)) throw new Fout(429, 'Te veel pogingen. Probeer het over een kwartier opnieuw.');
       const t = token();
       db.linkOpslaan(hash(t), adres, veiligTerug(terug), Date.now() + LINK_GELDIG_MS);

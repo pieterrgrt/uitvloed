@@ -1,4 +1,4 @@
-// Start de server van uitvloed. Instellingen via omgevingsvariabelen (zie .env.voorbeeld).
+// Start de server van uitvloed. Instellingen via omgevingsvariabelen (zie .env.example).
 import { createServer } from 'node:http';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';

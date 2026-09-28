@@ -38,9 +38,11 @@ De teller is `preorders` uit `site/reeks.json` (bestellingen van vóór de serve
 
 ## Online zetten
 
+Voor de Hetzner-server met nginx en Mijndomein: volg `deploy/LIVE-ZETTEN.md`. In het algemeen:
+
 De `Dockerfile` in de hoofdmap bouwt de site en start de server. Elke host die een container kan draaien werkt (Fly.io, Render, Railway, een eigen VPS met Docker). Nodig:
 
-- de omgevingsvariabelen uit `.env.voorbeeld`, minimaal `UV_BASIS_URL=https://uitvloed.nl` en `SMTP_URL`;
+- de instellingen uit `.env.example`, zie `.env.example` in de hoofdmap;
 - een blijvende schijf op `/data` voor de database, met back-ups;
 - https ervoor (de meeste hosts regelen dat; op een eigen VPS bijvoorbeeld Caddy), en dan `UV_ACHTER_PROXY=1`;
 - de DNS van `uitvloed.nl` naar die host in plaats van naar GitHub Pages.
