@@ -4,11 +4,11 @@ uitvloed drukt Nederlandse literatuur opnieuw, maar pas als genoeg lezers erom v
 
 ## De website
 
-De site wordt gebouwd uit `site/reeks.json`, zonder extra pakketten:
+De site staat in `site/` en wordt gebouwd uit `site/reeks.json`. De server in `server/` levert die pagina's en regelt het inloggen (met een link per e-mail) en de pre-orders.
 
 ```sh
-node site/bouw.mjs                           # schrijft de pagina's naar site/_site/
-python3 -m http.server -d site/_site 8000    # bekijk op http://localhost:8000
+node site/bouw.mjs      # bouwt de pagina's naar site/_site/
+cd server && npm install && npm start    # http://localhost:3000
 ```
 
 Een boek toevoegen of een teller bijwerken doe je in `site/reeks.json`. Vaste bestanden (stylesheet, CNAME) staan in `site/statisch/`. Bij elke push naar `main` bouwt GitHub de site en zet hem online.
@@ -51,3 +51,4 @@ Vraag bij de drukpartij na, en pas zo nodig `boek.json` of de sjablonen aan:
 - **ISBN**: de achterkant houdt rechtsonder 36 × 22 mm vrij voor de streepjescode.
 
 Bestel altijd eerst één proefdruk en controleer: marges bij de rug, rugtekst gecentreerd, kleur van de strook, afbrekingen.
+Een boek toevoegen of een teller aanpassen doe je in `site/reeks.json`. Hoe de server werkt en hoe je hem online zet staat in `server/README.md`. Bij elke pull request bouwt GitHub de site en draait de servertests.

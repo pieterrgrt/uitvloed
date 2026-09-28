@@ -1,0 +1,5 @@
+.git
+**/node_modules
+site/_site
+server/data
+server/test
