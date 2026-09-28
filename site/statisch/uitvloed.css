@@ -160,3 +160,24 @@ a:hover { color: var(--ink); }
 .uv-footer .uv-wordmark { color: var(--paper); font-size: 20px; }
 .uv-footer-line { font-family: var(--font-serif); font-style: italic; font-size: 15px; opacity: .75; }
 .uv-footer-meta { font-size: 12px; opacity: .75; }
+
+/* Account en formulieren */
+.uv-btn-sm { height: 36px; padding: 0 18px; border-radius: 9px; font-size: 13px; }
+.uv-nav-in .uv-btn-sm { margin-left: auto; }
+.uv-btn[hidden] { display: none; }
+.uv-meter .uv-btn-block + .uv-btn-block { margin-top: 10px; }
+.uv-melding { font-family: var(--font-serif); font-style: italic; font-size: 15px; color: var(--muted); margin: 12px 0 0; min-height: 1.4em; }
+.uv-melding.is-fout { color: #9b3b2a; }
+.uv-form { max-width: 460px; display: flex; flex-direction: column; gap: 12px; }
+.uv-form label { font-size: 13px; font-weight: 700; }
+.uv-field { font: inherit; font-size: 16px; height: 48px; padding: 0 14px; border-radius: 11px; border: 1.4px solid rgba(43,39,36,.28); background: var(--paper); color: var(--ink); }
+.uv-field:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.uv-list { list-style: none; margin: 0 0 30px; padding: 0; max-width: 620px; }
+.uv-list li { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.uv-list a { font-family: var(--font-serif); font-size: 21px; color: var(--ink); }
+.uv-list span { font-size: 13px; color: var(--muted); }
+.uv-account section { margin-top: 8px; }
+
+/* Voettekst altijd onderaan, ook op korte pagina's */
+body { min-height: 100vh; display: flex; flex-direction: column; }
+main { flex: 1; }
