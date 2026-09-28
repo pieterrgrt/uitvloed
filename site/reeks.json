@@ -1,0 +1,45 @@
+{
+  "uitgelicht": 7,
+  "doel": 500,
+  "boeken": [
+    {
+      "nummer": 7,
+      "titel": "De stille kade",
+      "auteur": "Marieke Vondel",
+      "genre": "Roman",
+      "kleur": "reeks-07",
+      "status": "pre-order",
+      "preorders": 412,
+      "onderregel": "Een roman over wachten, en over water dat nergens heen kan.",
+      "tekst": [
+        "Aan de rand van een vergeten havenstad wacht Anne op een brief die alles zal veranderen. In korte, heldere hoofdstukken tekent Marieke Vondel een portret van verlangen en geduld — van water dat stilstaat en toch nooit rust.",
+        "Een roman die je langzaam wilt lezen, in het uur dat noch nacht noch ochtend is."
+      ],
+      "gegevens": { "Formaat": "Paperback A6", "Pagina's": "240", "Taal": "Nederlands", "Verwacht": "Maart 2026" }
+    },
+    {
+      "nummer": 9,
+      "titel": "De ontdekking van de hemel",
+      "auteur": "Harry Mulisch",
+      "genre": "Roman",
+      "kleur": "reeks-09",
+      "status": "pre-order",
+      "preorders": 205,
+      "tekst": [
+        "Een van de grote Nederlandse romans. Mulisch voert ons mee door drie generaties, van verborgen jeugd tot ontmoeting en verlies. Poëtisch en meeslepend."
+      ],
+      "gegevens": { "Formaat": "Paperback A6", "Taal": "Nederlands" }
+    },
+    { "nummer": 8, "titel": "Wolfijzers", "auteur": "Selma Roos", "kleur": "reeks-08", "status": "binnenkort" },
+    { "nummer": 6, "titel": "Nachtwacht in juli", "auteur": "Joost Berghuis", "kleur": "reeks-06", "status": "verschenen" },
+    { "nummer": 5, "titel": "Het zoutmeer", "auteur": "Aisha Lammers", "kleur": "reeks-05", "status": "verschenen" },
+    { "nummer": 4, "titel": "Brieven aan niemand", "auteur": "F. van Doorn", "kleur": "reeks-04", "status": "verschenen" },
+    { "nummer": 3, "titel": "Het uur van de wolf", "auteur": "Willem Aarts", "kleur": "reeks-03", "status": "uitverkocht" },
+    { "nummer": 2, "titel": "Zomergasten", "auteur": "Lea Mertens", "kleur": "reeks-02", "status": "verschenen" }
+  ],
+  "themas": [
+    { "titel": "De Tachtigers", "regel": "Toen taal weer mocht zingen.", "kleur": "inktblauw" },
+    { "titel": "Naoorlogse stemmen", "regel": "Puin, en wat er daarna groeide.", "kleur": "terracotta" },
+    { "titel": "Vlaamse vertellers", "regel": "Verhalen met modder aan de laarzen.", "kleur": "mosgroen" }
+  ]
+}
