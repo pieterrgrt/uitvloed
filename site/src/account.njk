@@ -1,0 +1,32 @@
+---
+layout: basis.njk
+titel: Mijn account — uitvloed
+beschrijving: Log in bij uitvloed.
+permalink: /account/
+---
+<div class="wrap uv-account" style="padding-block: 48px 60px">
+  <h1 class="uv-pagetitle">Mijn account</h1>
+  <p class="uv-sub" data-staat="laden">Even kijken of je al bent ingelogd…</p>
+  <section data-staat="uit" hidden>
+    <p class="uv-sub">Log in met je e-mailadres. Je krijgt een link waarmee je direct binnen bent, zonder wachtwoord.</p>
+    <form class="uv-card uv-form" id="inlogformulier" novalidate>
+      <label for="email">E-mailadres</label>
+      <input class="uv-field" id="email" name="email" type="email" autocomplete="email" required placeholder="jij@voorbeeld.nl">
+      <button class="uv-btn uv-btn-block" type="submit">Stuur mij een inloglink</button>
+      <p class="uv-melding" data-melding="inloggen" role="status"></p>
+    </form>
+  </section>
+  <section data-staat="verstuurd" hidden>
+    <div class="uv-card uv-form">
+      <div class="uv-eyebrow uv-eyebrow-accent">Kijk in je mail</div>
+      <p class="uv-body" style="margin: 12px 0 0">We hebben een inloglink gestuurd naar <b data-email></b>. Klik op de link in de mail om in te loggen. De link werkt één keer en vervalt na 15 minuten.</p>
+    </div>
+  </section>
+  <section data-staat="in" hidden>
+    <p class="uv-sub">Ingelogd als <b data-email></b>.</p>
+    <div class="uv-section-head"><h2 class="uv-eyebrow" style="margin:0">Mijn pre-orders</h2><a class="uv-textlink" href="/reeks/">de hele reeks →</a></div>
+    <ul class="uv-list" data-lijst></ul>
+    <p class="uv-lead" data-leeg hidden>Je hebt nog geen boeken gereserveerd.</p>
+    <button type="button" class="uv-btn uv-btn-secondary" data-uitloggen>Uitloggen</button>
+  </section>
+</div>

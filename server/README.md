@@ -5,7 +5,7 @@ Eén Node-programma dat de website levert én het inloggen en de pre-orders rege
 ## Lokaal draaien
 
 ```sh
-node site/bouw.mjs          # vanuit de hoofdmap: bouwt de pagina's
+(cd site && npm install && npm run build)   # vanuit de hoofdmap: bouwt de pagina's
 cd server
 npm install
 npm start                   # http://localhost:3000
@@ -34,7 +34,7 @@ Wijzigende verzoeken worden alleen aangenomen als ze van `UV_BASIS_URL` komen. H
 | `POST /api/preorders` `{nummer}` | Reserveert een boek |
 | `DELETE /api/preorders` `{nummer}` | Annuleert de reservering |
 
-De teller is `preorders` uit `site/reeks.json` (bestellingen van vóór de server) plus de reserveringen in de database. Zet `preorders` op 0 als je alleen echte reserveringen wilt tellen.
+De teller is `preorders` uit het boekbestand in `site/boeken/` (bestellingen van vóór de server) plus de reserveringen in de database. Zet `preorders` op 0 als je alleen echte reserveringen wilt tellen.
 
 ## Online zetten
 

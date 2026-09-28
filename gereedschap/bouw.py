@@ -8,8 +8,8 @@ Schrijft naar boeken/<titel>/uit/:
 met --hulplijnen ook omslag-hulplijnen.pdf (snijrand en rug zichtbaar),
 met --voorbeeld PNG's van het omslag en de eerste pagina's om snel te bekijken.
 
-Titel, auteur, kleur en achterflaptekst komen uit site/reeks.json (via het nummer
-in boek.json); wat in boek.json staat gaat voor.
+Titel, auteur, kleur, achterflaptekst en jaar van de eerste druk komen uit het
+boekbestand in site/boeken/ (via het nummer in boek.json); wat in boek.json staat gaat voor.
 """
 
 import datetime
@@ -37,14 +37,18 @@ def kleurcode(naam):
 
 def gegevens(map_):
     boek = json.loads((map_ / "boek.json").read_text("utf-8"))
-    reeks = json.loads((WERKPLAATS / "site/reeks.json").read_text("utf-8"))
-    uit_reeks = next((b for b in reeks["boeken"] if b["nummer"] == boek.get("nummer")), {})
-    samen = {**uit_reeks, **boek}
-    samen.setdefault("achterflap", uit_reeks.get("tekst", []))
+    site = (json.loads(p.read_text("utf-8")) for p in sorted((WERKPLAATS / "site/boeken").glob("*.json")))
+    uit_site = next((b for b in site if b["nummer"] == boek.get("nummer")), {})
+    # Op de site is 'jaar' de eerste druk; in het colofon is het het jaar van deze uitgave.
+    eerste_druk = uit_site.pop("jaar", None)
+    samen = {**uit_site, **boek}
+    samen.setdefault("achterflap", uit_site.get("tekst", []))
+    if eerste_druk:
+        samen.setdefault("oorspronkelijk", f"Eerste druk: {eerste_druk}.")
     samen.setdefault("jaar", datetime.date.today().year)
     for veld in ("titel", "auteur", "nummer", "kleur"):
         if veld not in samen:
-            sys.exit(f"'{veld}' ontbreekt: zet het in {map_ / 'boek.json'} of in site/reeks.json.")
+            sys.exit(f"'{veld}' ontbreekt: zet het in {map_ / 'boek.json'} of in site/boeken/.")
     samen["kleurcode"] = kleurcode(samen["kleur"])
     return samen
 

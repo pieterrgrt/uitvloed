@@ -145,7 +145,7 @@ Alle commando's in `~/uitvloed`.
 | Foutmeldingen bekijken | `docker compose logs -f web` (stoppen: Ctrl+C) |
 | Back-up van de database | `docker compose exec web node server/src/backup.mjs` |
 | Back-up naar de server kopiëren | `docker compose cp web:/data/backups/ ./backups/` |
-| Boek toevoegen of teller aanpassen | `site/reeks.json` wijzigen op GitHub, dan `./deploy/update.sh` |
+| Boek toevoegen of teller aanpassen | `site/boeken/` wijzigen op GitHub, dan `./deploy/update.sh` |
 | nginx-config testen na een wijziging | `sudo nginx -t && sudo systemctl reload nginx` |
 | Certificaten controleren | `sudo certbot certificates` |
 

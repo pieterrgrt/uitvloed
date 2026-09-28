@@ -1,0 +1,37 @@
+---
+layout: basis.njk
+titel: De reeks — uitvloed
+beschrijving: Genummerd, om de tien euro, gedrukt op vraag.
+actief: De reeks
+permalink: /reeks/
+---
+{% import "bouwstenen.njk" as uv %}
+<div class="wrap" style="padding-block: 48px 60px">
+  <h1 class="uv-pagetitle">De reeks</h1>
+  <p class="uv-sub">Genummerd, om de tien euro, gedrukt op vraag. Een kast die langzaam vol raakt.</p>
+  <div class="uv-filter">
+    <div class="uv-chips" role="group" aria-label="Toon boeken">
+      <button type="button" class="uv-chip" data-filter="alles" aria-pressed="true">Alles · {{ reeks.boeken | length }}</button>
+      <button type="button" class="uv-chip" data-filter="pre-order" aria-pressed="false">In pre-order</button>
+      <button type="button" class="uv-chip" data-filter="verschenen" aria-pressed="false">Verschenen</button>
+      <button type="button" class="uv-chip" data-filter="binnenkort" aria-pressed="false">Binnenkort</button>
+    </div>
+    <div class="uv-sort">Sorteer op <b>nummer ↓</b></div>
+  </div>
+  <div class="uv-grid" id="catalogus">
+{%- for boek in reeks.boeken %}
+{{ uv.item(boek, reeks.doel) }}
+{%- endfor %}
+  </div>
+</div>
+<script>
+  document.querySelectorAll('[data-filter]').forEach(function (knop) {
+    knop.addEventListener('click', function () {
+      var f = knop.dataset.filter;
+      document.querySelectorAll('[data-filter]').forEach(function (k) { k.setAttribute('aria-pressed', String(k === knop)); });
+      document.querySelectorAll('#catalogus .uv-item').forEach(function (el) {
+        el.hidden = f !== 'alles' && el.dataset.status !== f && !(f === 'verschenen' && el.dataset.status === 'uitverkocht');
+      });
+    });
+  });
+</script>

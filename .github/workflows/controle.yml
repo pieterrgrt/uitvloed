@@ -17,9 +17,14 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: server/package-lock.json
+          cache-dependency-path: |
+            site/package-lock.json
+            server/package-lock.json
       - name: Site bouwen
-        run: node site/bouw.mjs
+        working-directory: site
+        run: |
+          npm ci
+          npm run build
       - name: Server testen
         working-directory: server
         run: |

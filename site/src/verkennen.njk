@@ -1,0 +1,13 @@
+---
+layout: basis.njk
+titel: Verkennen — uitvloed
+beschrijving: Verken de Nederlandse literatuur.
+actief: Verkennen
+permalink: /verkennen/
+---
+{% import "bouwstenen.njk" as uv %}
+<div class="wrap" style="padding-block: 48px 60px">
+  <h1 class="uv-pagetitle">Verkennen</h1>
+  <p class="uv-sub">Toegankelijker dan het archief — begin bij een gevoel, niet bij een naam.</p>
+  {{ uv.themas(reeks.themas) }}
+</div>
