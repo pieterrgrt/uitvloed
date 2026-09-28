@@ -1,0 +1,14 @@
+{
+  "titel": "De oversteek",
+  "auteur": "Proef van uitvloed",
+  "nummer": 0,
+  "kleur": "reeks-07",
+  "oorspronkelijk": "Deze proeftekst is geschreven om de boekpijplijn te testen.",
+  "weg": ["^DE PROEF$"],
+  "hoofdstukpatroon": "^HOOFDSTUK [IVXLC]+$|^[IVXLC]+\\.$",
+  "papierdikte_mm": 0.1,
+  "achterflap": [
+    "Drie dagen voert de veerman niet. Anne wacht aan de kade met een brief die ze zelf naar de overkant wil brengen.",
+    "Een korte proeftekst waarmee de boekpijplijn van uitvloed wordt getest: van ruwe scan tot drukklare pocket."
+  ]
+}
