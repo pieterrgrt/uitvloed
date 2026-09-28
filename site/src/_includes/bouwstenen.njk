@@ -1,0 +1,67 @@
+{#- Bouwstenen in de stijl van de reeks: kaft, catalogusitem, vraagmeter, stappen, thema's. -#}
+
+{% macro status(b, doel) -%}
+{%- if b.status == 'pre-order' %}Pre-order · {{ (b.preorders or 0) | pct(doel) }}%
+{%- elif b.status == 'verschenen' %}Verschenen · € 10
+{%- elif b.status == 'binnenkort' %}Binnenkort
+{%- else %}Uitverkocht{% endif -%}
+{%- endmacro %}
+
+{% macro kaft(b, groot = false) -%}
+<div class="uv-cover{% if groot %} uv-cover-lg{% endif %}" style="--reeks: var(--{{ b.kleur }})" role="img" aria-label="Kaft van {{ b.titel }} door {{ b.auteur }}">
+  <div class="uv-cover-strip"><span>uitvloed</span><span class="uv-no">{{ b.nummer | nr }}</span></div>
+  <div class="uv-cover-body">
+    <div><div class="uv-cover-rule"></div><div class="uv-cover-title">{{ b.titel }}</div></div>
+    <div class="uv-cover-author">{{ b.auteur }}</div>
+  </div>
+</div>
+{%- endmacro %}
+
+{% macro item(b, doel) -%}
+<a class="uv-item" href="{{ b.pad }}" data-status="{{ b.status }}">
+  <div class="uv-cover uv-cover-sm" style="--reeks: var(--{{ b.kleur }})">
+    <div class="uv-cover-strip"><span>uitvloed</span><span class="uv-no">{{ b.nummer | nr }}</span></div>
+    <div class="uv-cover-body"><div class="uv-cover-title">{{ b.titel }}</div><div class="uv-cover-author">{{ b.auteur }}</div></div>
+  </div>
+  <div class="uv-item-status{% if b.status == 'pre-order' %} is-open{% endif %}">{{ status(b, doel) }}</div>
+  <div class="uv-item-meta">{{ b.auteur }}, {{ b.jaar }}</div>
+</a>
+{%- endmacro %}
+
+{% macro meter(b, doel, volledig = false) -%}
+{%- set aantal = b.preorders or 0 %}
+{%- set nog = doel - aantal %}
+<div class="uv-card uv-meter" data-teller="{{ b.nummer }}" data-doel="{{ doel }}">
+  <div class="uv-meter-head">
+    <div class="uv-meter-count"><span class="uv-meter-dot" aria-hidden="true"></span><span><span data-aantal>{{ aantal }}</span> <small>pre-orders</small></span></div>
+    <span class="uv-meter-goal">doel {{ doel }}</span>
+  </div>
+  <div class="uv-meter-track" role="progressbar" aria-label="Pre-orders voor {{ b.titel }}" aria-valuemin="0" aria-valuemax="{{ doel }}" aria-valuenow="{{ aantal }}" data-balk><div class="uv-meter-fill" style="width: {{ aantal | pct(doel) }}%" data-vulling></div></div>
+  <div class="uv-meter-note" data-notitie>{% if nog > 0 %}Nog {{ nog }} lezers en de persen draaien.{% else %}Het doel is gehaald. De persen draaien.{% endif %}</div>
+  {%- if volledig %}
+  <div class="uv-price"><strong>€ 10</strong><span>paperback · incl. verzending</span></div>
+  <button type="button" class="uv-btn uv-btn-block" data-preorder="{{ b.nummer }}">Pre-order · € 10</button>
+  <button type="button" class="uv-btn uv-btn-secondary uv-btn-block" data-annuleer="{{ b.nummer }}" hidden>Annuleer pre-order</button>
+  <p class="uv-melding" data-melding="{{ b.nummer }}" role="status"></p>
+  {%- endif %}
+</div>
+{%- endmacro %}
+
+{% macro stappen(doel) -%}
+<section class="uv-card uv-steps" id="pre-order" aria-labelledby="stappen-kop">
+  <h2 class="uv-eyebrow" id="stappen-kop" style="margin:0">Zo werkt pre-order bij uitvloed</h2>
+  <ol class="uv-steps-grid">
+    <li><div class="uv-step-no">1.</div><div class="uv-step-text">Reserveer je exemplaar voor een tientje.</div></li>
+    <li><div class="uv-step-no">2.</div><div class="uv-step-text">Bij {{ doel }} pre-orders drukken we de oplage — nooit meer dan nodig.</div></li>
+    <li><div class="uv-step-no">3.</div><div class="uv-step-text">Binnen drie weken op je mat, genummerd in de reeks.</div></li>
+  </ol>
+</section>
+{%- endmacro %}
+
+{% macro themas(lijst) -%}
+<div class="uv-themes">
+{%- for t in lijst %}
+<div class="uv-card uv-theme" style="--reeks: var(--{{ t.kleur }})"><div class="uv-theme-swatch" aria-hidden="true"></div><h3 class="uv-theme-title" style="margin:0">{{ t.titel }}</h3><p class="uv-theme-line" style="margin:0">{{ t.regel }}</p></div>
+{%- endfor %}
+</div>
+{%- endmacro %}

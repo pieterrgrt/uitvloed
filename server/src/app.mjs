@@ -3,6 +3,7 @@ import { createHash, randomBytes } from 'node:crypto';
 import { readFile, stat } from 'node:fs/promises';
 import { extname, join, normalize, sep } from 'node:path';
 import { inlogmail } from './mail.mjs';
+import { boekPad } from '../../site/reeks.mjs';
 
 const LINK_GELDIG_MS = 15 * 60 * 1000;
 const SESSIE_GELDIG_MS = 30 * 24 * 60 * 60 * 1000;
@@ -18,9 +19,6 @@ const TYPES = {
 
 const hash = (s) => createHash('sha256').update(s).digest('hex');
 const token = () => randomBytes(32).toString('base64url');
-// Zelfde adres als site/bouw.mjs maakt: /reeks/07-de-stille-kade/
-const boekPad = (b) => `/reeks/${String(b.nummer).padStart(2, '0')}-${b.titel.toLowerCase()
-  .normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}/`;
 
 class Fout extends Error {
   constructor(status, melding) { super(melding); this.status = status; }

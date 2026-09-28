@@ -1,9 +1,17 @@
 # uitvloed: de site en de server in één container.
+FROM node:22-alpine AS site
+WORKDIR /app/site
+COPY site/package.json site/package-lock.json ./
+RUN npm ci
+COPY site ./
+RUN npm run build
+
 FROM node:22-alpine
 WORKDIR /app
 
-COPY site ./site
-RUN node site/bouw.mjs
+COPY site/reeks.json site/reeks.mjs ./site/
+COPY site/boeken ./site/boeken
+COPY --from=site /app/site/_site ./site/_site
 
 COPY server/package.json server/package-lock.json ./server/
 RUN cd server && npm ci --omit=dev

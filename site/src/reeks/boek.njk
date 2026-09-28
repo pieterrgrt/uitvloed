@@ -1,0 +1,40 @@
+---
+layout: basis.njk
+actief: De reeks
+pagination:
+  data: reeks.boeken
+  size: 1
+  alias: b
+permalink: "{{ b.pad }}"
+---
+{% import "bouwstenen.njk" as uv %}
+<div class="wrap">
+  <nav class="uv-crumbs" aria-label="Kruimelpad"><a href="/reeks/">De reeks</a><span aria-hidden="true">›</span><span>{{ b.nummer | nr }}</span><span aria-hidden="true">›</span><span aria-current="page">{{ b.titel }}</span></nav>
+  <div class="uv-book">
+    <div class="uv-book-side">
+      {{ uv.kaft(b, true) }}
+      {%- if b.status == 'pre-order' %}
+      {{ uv.meter(b, reeks.doel, true) }}
+      {%- elif b.status == 'verschenen' and b.bestellink %}
+      <div class="uv-card uv-meter">
+        <div class="uv-meter-goal" style="font-size:14px">Verschenen</div>
+        <div class="uv-price"><strong>€ 10</strong><span>paperback · incl. verzending</span></div>
+        <a class="uv-btn uv-btn-block" href="{{ b.bestellink }}">Bestellen · € 10</a>
+      </div>
+      {%- else %}
+      <div class="uv-card"><div class="uv-meter-goal" style="font-size:14px">{{ uv.status(b, reeks.doel) }}</div></div>
+      {%- endif %}
+    </div>
+    <div>
+      <div class="uv-eyebrow uv-eyebrow-accent">{% if b.genre %}{{ b.genre }} · {% endif %}{{ b.jaar }} · {{ b.nummer | nr }}</div>
+      <h1 class="uv-title">{{ b.titel }}</h1>
+      <div class="uv-author">{{ b.auteur }}</div>
+      <p class="uv-lead">{{ b.kort }}</p>
+      {%- if b.tekst %}
+      <div class="uv-body">{% for p in b.tekst %}<p>{{ p }}</p>{% endfor %}</div>
+      {%- endif %}
+      {% if b.status == 'pre-order' %}{{ uv.stappen(reeks.doel) }}{% endif %}
+      <dl class="uv-specs"><div><dt>Eerste druk</dt><dd>{{ b.jaar }}</dd></div>{% for k, v in b.gegevens %}<div><dt>{{ k }}</dt><dd>{{ v }}</dd></div>{% endfor %}</dl>
+    </div>
+  </div>
+</div>

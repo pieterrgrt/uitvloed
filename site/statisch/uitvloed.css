@@ -108,6 +108,7 @@ a:hover { color: var(--ink); }
 .uv-item .uv-cover-sm { transition: transform .2s ease; }
 .uv-item-status { font-size: 12px; font-weight: 600; color: var(--muted); margin-top: 10px; }
 .uv-item-status.is-open { color: var(--accent); }
+.uv-item-meta { font-family: var(--font-serif); font-style: italic; font-size: 14px; color: var(--muted); margin-top: 2px; }
 
 /* Filter */
 .uv-filter { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 16px 0; margin-bottom: 34px; }

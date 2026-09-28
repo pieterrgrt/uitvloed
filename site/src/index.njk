@@ -1,0 +1,41 @@
+---
+layout: basis.njk
+titel: uitvloed — Nederlandse literatuur, opnieuw gedrukt
+actief: Vandaag
+permalink: /
+---
+{% import "bouwstenen.njk" as uv %}
+{%- set b = reeks.boeken | nummer(reeks.uitgelicht) %}
+<div class="wrap">
+  <section class="uv-hero">
+    <a href="{{ b.pad }}">{{ uv.kaft(b) }}</a>
+    <div>
+      <div class="uv-eyebrow uv-eyebrow-accent">{% if b.status == 'pre-order' %}Nu in pre-order{% else %}Uitgelicht{% endif %} · {{ b.nummer | nr }}</div>
+      <h1 class="uv-display">{{ b.titel }}</h1>
+      <div class="uv-author">{{ b.auteur }} · {{ b.jaar }}</div>
+      <p class="uv-lead">{{ b.kort }}</p>
+      {% if b.status == 'pre-order' %}{{ uv.meter(b, reeks.doel) }}{% endif %}
+      <div class="uv-actions">
+        {%- if b.status == 'pre-order' %}
+        <a class="uv-btn" href="{{ b.pad }}">Pre-order · € 10</a>
+        {%- elif b.bestellink %}
+        <a class="uv-btn" href="{{ b.bestellink }}">Bestellen · € 10</a>
+        {%- endif %}
+        <a class="uv-btn uv-btn-secondary" href="{{ b.pad }}">Lees meer</a>
+      </div>
+    </div>
+  </section>
+  <section class="uv-section" aria-labelledby="verzamelen">
+    <div class="uv-section-head"><h2 class="uv-eyebrow" id="verzamelen" style="margin:0">Nu aan het verzamelen</h2><a class="uv-textlink" href="/reeks/">de hele reeks →</a></div>
+    <div class="uv-grid uv-grid-5">
+{%- for boek in reeks.boeken | batch(5) | first %}
+{{ uv.item(boek, reeks.doel) }}
+{%- endfor %}
+    </div>
+  </section>
+  <section class="uv-section" aria-labelledby="verken">
+    <div class="uv-section-head"><h2 class="uv-eyebrow" id="verken" style="margin:0">Verken de Nederlandse literatuur</h2></div>
+    <p class="uv-section-sub">Toegankelijker dan het archief — begin bij een gevoel, niet bij een naam.</p>
+    {{ uv.themas(reeks.themas) }}
+  </section>
+</div>

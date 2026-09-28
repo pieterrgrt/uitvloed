@@ -1,17 +1,17 @@
 // Start de server van uitvloed. Instellingen via omgevingsvariabelen (zie .env.example).
 import { createServer } from 'node:http';
-import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { openDatabase } from './db.mjs';
 import { maakMailer } from './mail.mjs';
 import { maakApp } from './app.mjs';
+import { laadReeks } from '../../site/reeks.mjs';
 
 const standaard = (rel) => fileURLToPath(new URL(rel, import.meta.url));
 const env = process.env;
 const poort = Number(env.PORT ?? 3000);
 const basisUrl = env.UV_BASIS_URL ?? `http://localhost:${poort}`;
 const siteMap = env.UV_SITE ?? standaard('../../site/_site');
-const reeks = JSON.parse(readFileSync(env.UV_REEKS ?? standaard('../../site/reeks.json'), 'utf8'));
+const reeks = laadReeks(env.UV_REEKS);   // map met reeks.json en boeken/
 const db = openDatabase(env.UV_DATABASE ?? standaard('../data/uitvloed.db'));
 const mailer = maakMailer({ smtpUrl: env.SMTP_URL, afzender: env.UV_AFZENDER ?? 'uitvloed <post@uitvloed.nl>' });
 

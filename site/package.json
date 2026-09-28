@@ -1,0 +1,13 @@
+{
+  "name": "uitvloed-site",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "build": "eleventy",
+    "start": "eleventy --serve"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.6"
+  }
+}

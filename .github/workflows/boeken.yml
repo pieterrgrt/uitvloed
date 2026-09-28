@@ -2,9 +2,9 @@ name: Boekpijplijn testen
 
 on:
   push:
-    paths: ['gereedschap/**', 'sjablonen/**', 'boeken/**']
+    paths: ['gereedschap/**', 'sjablonen/**', 'boeken/**', 'site/boeken/**']
   pull_request:
-    paths: ['gereedschap/**', 'sjablonen/**', 'boeken/**']
+    paths: ['gereedschap/**', 'sjablonen/**', 'boeken/**', 'site/boeken/**']
 
 permissions:
   contents: read
