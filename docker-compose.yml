@@ -1,0 +1,13 @@
+# uitvloed op de Hetzner-server: alleen intern bereikbaar, nginx stuurt uitvloed.nl hierheen.
+services:
+  web:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "127.0.0.1:8002:3000"
+    volumes:
+      - data:/data
+
+volumes:
+  data:

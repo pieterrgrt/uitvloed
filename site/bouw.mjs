@@ -26,9 +26,8 @@ const STATUS = {
 };
 const FILTERS = [['pre-order', 'In pre-order'], ['verschenen', 'Verschenen'], ['binnenkort', 'Binnenkort']];
 
-function pagina({ pad, titel, beschrijving, actief, inhoud }) {
-  const diepte = pad ? pad.split('/').length : 0;
-  const r = diepte ? '../'.repeat(diepte) : './';
+function pagina({ pad, titel, beschrijving, actief, inhoud, bestand = 'index.html' }) {
+  const r = '/';
   const links = [['', 'Vandaag'], ['reeks/', 'De reeks'], ['verkennen/', 'Verkennen'], ['over/', 'Over uitvloed']];
   const html = `<!doctype html>
 <html lang="nl">
@@ -41,6 +40,7 @@ function pagina({ pad, titel, beschrijving, actief, inhoud }) {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap">
 <link rel="stylesheet" href="${r}uitvloed.css">
+<script src="${r}uitvloed.js" defer></script>
 </head>
 <body>
 <a class="skip" href="#inhoud">Naar de inhoud</a>
@@ -50,6 +50,7 @@ function pagina({ pad, titel, beschrijving, actief, inhoud }) {
     <nav class="uv-nav-links" aria-label="Hoofdmenu">
       ${links.map(([p, t]) => `<a href="${r}${p}"${actief === t ? ' aria-current="page"' : ''}>${t}</a>`).join('\n      ')}
     </nav>
+    <a class="uv-btn uv-btn-sm" href="${r}account/" data-account>Aanmelden</a>
   </div>
 </header>
 <main id="inhoud">
@@ -67,7 +68,7 @@ ${inhoud(r)}
 `;
   const map = join(uit, pad);
   mkdirSync(map, { recursive: true });
-  writeFileSync(join(map, 'index.html'), html);
+  writeFileSync(join(map, bestand), html);
 }
 
 const kaftGroot = (b, groot = false) => `<div class="uv-cover${groot ? ' uv-cover-lg' : ''}" style="--reeks: var(--${b.kleur})" role="img" aria-label="Kaft van ${esc(b.titel)} door ${esc(b.auteur)}">
@@ -88,15 +89,17 @@ const item = (b, r) => `<a class="uv-item" href="${r}reeks/${slug(b)}/" data-sta
 
 const meter = (b, r, volledig) => {
   const nog = Math.max(0, DOEL - b.preorders);
-  return `<div class="uv-card uv-meter">
+  return `<div class="uv-card uv-meter" data-teller="${b.nummer}" data-doel="${DOEL}">
   <div class="uv-meter-head">
-    <div class="uv-meter-count"><span class="uv-meter-dot" aria-hidden="true"></span><span>${b.preorders} <small>pre-orders</small></span></div>
+    <div class="uv-meter-count"><span class="uv-meter-dot" aria-hidden="true"></span><span><span data-aantal>${b.preorders}</span> <small>pre-orders</small></span></div>
     <span class="uv-meter-goal">doel ${DOEL}</span>
   </div>
-  <div class="uv-meter-track" role="progressbar" aria-label="Pre-orders voor ${esc(b.titel)}" aria-valuemin="0" aria-valuemax="${DOEL}" aria-valuenow="${b.preorders}"><div class="uv-meter-fill" style="width: ${pct(b)}%"></div></div>
-  <div class="uv-meter-note">${nog ? `Nog ${nog} lezers en de persen draaien.` : 'Het doel is gehaald. De persen draaien.'}</div>${volledig ? `
+  <div class="uv-meter-track" role="progressbar" aria-label="Pre-orders voor ${esc(b.titel)}" aria-valuemin="0" aria-valuemax="${DOEL}" aria-valuenow="${b.preorders}" data-balk><div class="uv-meter-fill" style="width: ${pct(b)}%" data-vulling></div></div>
+  <div class="uv-meter-note" data-notitie>${nog ? `Nog ${nog} lezers en de persen draaien.` : 'Het doel is gehaald. De persen draaien.'}</div>${volledig ? `
   <div class="uv-price"><strong>€ 10</strong><span>paperback · incl. verzending</span></div>
-  <a class="uv-btn uv-btn-block" href="${r}over/#pre-order">Pre-order · € 10</a>` : ''}
+  <button type="button" class="uv-btn uv-btn-block" data-preorder="${b.nummer}">Pre-order · € 10</button>
+  <button type="button" class="uv-btn uv-btn-secondary uv-btn-block" data-annuleer="${b.nummer}" hidden>Annuleer pre-order</button>
+  <p class="uv-melding" data-melding="${b.nummer}" role="status"></p>` : ''}
 </div>`;
 };
 
@@ -232,4 +235,45 @@ pagina({
 </div>`,
 });
 
-console.log(`Gebouwd: ${boeken.length} boeken, ${boeken.length + 4} pagina's → ${uit}`);
+// Mijn account (inloggen met een link per e-mail)
+pagina({
+  pad: 'account', titel: 'Mijn account — uitvloed', beschrijving: 'Log in bij uitvloed.', actief: '',
+  inhoud: (r) => `<div class="wrap uv-account" style="padding-block: 48px 60px">
+  <h1 class="uv-pagetitle">Mijn account</h1>
+  <p class="uv-sub" data-staat="laden">Even kijken of je al bent ingelogd…</p>
+  <section data-staat="uit" hidden>
+    <p class="uv-sub">Log in met je e-mailadres. Je krijgt een link waarmee je direct binnen bent, zonder wachtwoord.</p>
+    <form class="uv-card uv-form" id="inlogformulier" novalidate>
+      <label for="email">E-mailadres</label>
+      <input class="uv-field" id="email" name="email" type="email" autocomplete="email" required placeholder="jij@voorbeeld.nl">
+      <button class="uv-btn uv-btn-block" type="submit">Stuur mij een inloglink</button>
+      <p class="uv-melding" data-melding="inloggen" role="status"></p>
+    </form>
+  </section>
+  <section data-staat="verstuurd" hidden>
+    <div class="uv-card uv-form">
+      <div class="uv-eyebrow uv-eyebrow-accent">Kijk in je mail</div>
+      <p class="uv-body" style="margin: 12px 0 0">We hebben een inloglink gestuurd naar <b data-email></b>. Klik op de link in de mail om in te loggen. De link werkt één keer en vervalt na 15 minuten.</p>
+    </div>
+  </section>
+  <section data-staat="in" hidden>
+    <p class="uv-sub">Ingelogd als <b data-email></b>.</p>
+    <div class="uv-section-head"><h2 class="uv-eyebrow" style="margin:0">Mijn pre-orders</h2><a class="uv-textlink" href="${r}reeks/">de hele reeks →</a></div>
+    <ul class="uv-list" data-lijst></ul>
+    <p class="uv-lead" data-leeg hidden>Je hebt nog geen boeken gereserveerd.</p>
+    <button type="button" class="uv-btn uv-btn-secondary" data-uitloggen>Uitloggen</button>
+  </section>
+</div>`,
+});
+
+// Pagina voor adressen die niet bestaan
+pagina({
+  pad: '', bestand: '404.html', titel: 'Niet gevonden — uitvloed', beschrijving: 'Deze pagina bestaat niet.', actief: '',
+  inhoud: () => `<div class="wrap" style="padding-block: 48px 60px">
+  <h1 class="uv-pagetitle">Deze pagina bestaat niet</h1>
+  <p class="uv-sub">Misschien is het boek verhuisd naar een ander nummer.</p>
+  <a class="uv-textlink" href="/reeks/">naar de reeks →</a>
+</div>`,
+});
+
+console.log(`Gebouwd: ${boeken.length} boeken, ${boeken.length + 5} pagina's → ${uit}`);
