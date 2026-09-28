@@ -1,0 +1,24 @@
+name: Boekpijplijn testen
+
+on:
+  push:
+    paths: ['gereedschap/**', 'sjablonen/**', 'boeken/**']
+  pull_request:
+    paths: ['gereedschap/**', 'sjablonen/**', 'boeken/**']
+
+permissions:
+  contents: read
+
+jobs:
+  testen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r gereedschap/requirements.txt
+      - name: Opschoonscript testen
+        run: python -m unittest discover gereedschap
+      - name: Proefboek zetten
+        run: python gereedschap/bouw.py boeken/_proef
