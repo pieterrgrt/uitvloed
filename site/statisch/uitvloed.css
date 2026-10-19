@@ -81,27 +81,26 @@ a:hover { color: var(--ink); }
 @media (prefers-reduced-motion: reduce) { .uv-meter-dot { animation: none; } }
 
 /* Boekkaft */
-.uv-cover { --reeks: var(--accent); width: 300px; max-width: 100%; aspect-ratio: 300 / 480; border-radius: 4px; overflow: hidden; box-shadow: var(--shadow-cover-lg); background: var(--cover); display: flex; flex-direction: column; color: var(--ink); }
+.uv-cover { container-type: inline-size; --reeks: var(--accent); width: 300px; max-width: 100%; aspect-ratio: 300 / 480; border-radius: 4px; overflow: hidden; box-shadow: var(--shadow-cover-lg); background: var(--cover); display: flex; flex-direction: column; color: var(--ink); }
 .uv-cover-lg { width: 340px; }
 .uv-cover-strip { height: 46px; flex: none; background: var(--reeks); display: flex; align-items: center; justify-content: space-between; padding: 0 18px; color: var(--on-reeks); font-size: 11px; font-weight: 700; letter-spacing: -0.3px; }
 .uv-cover-lg .uv-cover-strip { height: 50px; padding: 0 20px; font-size: 13px; }
 .uv-no { letter-spacing: 1px; }
 .uv-cover-body { flex: 1; border: 1px solid var(--line); border-top: none; padding: 40px 26px; display: flex; flex-direction: column; justify-content: space-between; text-align: center; }
 .uv-cover-rule { width: 46px; height: 1.5px; background: var(--reeks); margin: 0 auto 22px; }
-.uv-cover-title { font-family: var(--font-serif); font-style: italic; font-size: 36px; line-height: 1.15; }
-.uv-cover-lg .uv-cover-title { font-size: 42px; }
+.uv-cover-title { font-family: var(--font-serif); font-style: italic; font-size: 12cqi; line-height: 1.15; }
 .uv-cover-author { font-weight: 700; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; }
 .uv-cover-sm { width: 100%; aspect-ratio: .66; border-radius: 3px; box-shadow: var(--shadow-cover-sm); }
 .uv-cover-sm .uv-cover-strip { height: 30px; padding: 0 11px; font-size: 9.5px; letter-spacing: -0.2px; }
 .uv-cover-sm .uv-cover-body { padding: 16px 12px; text-align: left; justify-content: flex-start; }
-.uv-cover-sm .uv-cover-title { font-style: normal; font-size: 22px; line-height: 1.1; }
+.uv-cover-sm .uv-cover-title { font-style: normal; font-size: clamp(16px, 13cqi, 22px); line-height: 1.1; }
 .uv-cover-sm .uv-cover-author { margin-top: auto; font-size: 8px; color: var(--cover-meta); }
 
 /* Catalogus */
 .uv-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px 28px; }
 .uv-grid-5 { grid-template-columns: repeat(5, 1fr); gap: 24px; }
 @media (max-width: 900px) { .uv-grid, .uv-grid-5 { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 560px) { .uv-grid, .uv-grid-5 { grid-template-columns: repeat(2, 1fr); gap: 24px 16px; } .uv-cover-sm .uv-cover-title { font-size: 18px; } }
+@media (max-width: 560px) { .uv-grid, .uv-grid-5 { grid-template-columns: repeat(2, 1fr); gap: 24px 16px; } }
 .uv-item { display: block; color: var(--ink); }
 .uv-item:hover { color: var(--ink); }
 .uv-item:hover .uv-cover-sm { transform: translateY(-3px); }
@@ -182,3 +181,44 @@ a:hover { color: var(--ink); }
 /* Voettekst altijd onderaan, ook op korte pagina's */
 body { min-height: 100vh; display: flex; flex-direction: column; }
 main { flex: 1; }
+
+/* Telefoon: compacte kop, kleinere kaft, titel vóór de kaft, veegbare rijen */
+@media (max-width: 720px) {
+  .uv-nav { position: static; }
+  .uv-nav-in { min-height: 0; padding-block: 12px 0; gap: 4px 12px; }
+  .uv-nav-in .uv-wordmark { order: 1; }
+  .uv-nav-in .uv-btn-sm { order: 2; }
+  .uv-nav-links { order: 3; flex: 1 0 100%; flex-wrap: nowrap; gap: 22px; overflow-x: auto; scrollbar-width: none; margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); }
+  .uv-nav-links::-webkit-scrollbar { display: none; }
+  .uv-nav-links a { flex: none; padding-block: 12px; }
+  .uv-nav-links a[aria-current="page"] { box-shadow: inset 0 -2px var(--ink); }
+}
+@media (max-width: 800px) {
+  .uv-hero { padding-block: 28px 24px; gap: 28px; }
+  .uv-hero > a { justify-self: center; }
+  .uv-hero .uv-cover { width: 200px; }
+  .uv-display { margin-top: 12px; }
+  .uv-lead { margin: 16px 0 22px; }
+}
+@media (max-width: 860px) {
+  .uv-crumbs { margin: 20px 0; }
+  .uv-book { display: flex; flex-direction: column; align-items: stretch; gap: 0; }
+  .uv-book-main > .uv-body { margin-top: 0; }
+  .uv-book-side, .uv-book-main { display: contents; }
+  .uv-book-main > * { order: 4; }
+  .uv-book-main > .uv-book-head { order: 1; }
+  .uv-book-side > .uv-cover { order: 2; width: 220px; margin: 28px auto; }
+  .uv-book-side > .uv-card { order: 3; max-width: none; }
+}
+@media (max-width: 560px) {
+  .uv-actions .uv-btn { flex: 1 1 auto; padding-inline: 18px; }
+  .uv-chips, .uv-grid-5 { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x mandatory; margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); scroll-padding-inline: var(--gutter); }
+  .uv-chips::-webkit-scrollbar, .uv-grid-5::-webkit-scrollbar { display: none; }
+  .uv-chip { flex: none; }
+  .uv-grid-5 { display: grid; grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 42%; gap: 16px; padding-bottom: 12px; }
+  .uv-grid-5 .uv-item { scroll-snap-align: start; }
+  .uv-filter { padding: 12px 0; margin-bottom: 24px; }
+  .uv-section { padding-block: 24px 8px; }
+  .uv-card { padding: 20px; }
+  .uv-footer-in { padding-block: 32px calc(32px + env(safe-area-inset-bottom)); }
+}

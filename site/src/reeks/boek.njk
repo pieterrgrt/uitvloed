@@ -25,10 +25,12 @@ permalink: "{{ b.pad }}"
       <div class="uv-card"><div class="uv-meter-goal" style="font-size:14px">{{ uv.status(b, reeks.doel) }}</div></div>
       {%- endif %}
     </div>
-    <div>
+    <div class="uv-book-main">
+      <div class="uv-book-head">
       <div class="uv-eyebrow uv-eyebrow-accent">{% if b.genre %}{{ b.genre }} · {% endif %}{{ b.jaar }} · {{ b.nummer | nr }}</div>
       <h1 class="uv-title">{{ b.titel }}</h1>
       <div class="uv-author">{{ b.auteur }}</div>
+      </div>
       <p class="uv-lead">{{ b.kort }}</p>
       {%- if b.tekst %}
       <div class="uv-body">{% for p in b.tekst %}<p>{{ p }}</p>{% endfor %}</div>
