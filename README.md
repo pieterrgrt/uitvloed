@@ -1,6 +1,6 @@
 # Uitvloed
 
-uitvloed drukt Nederlandse literatuur opnieuw, maar pas als genoeg lezers erom vragen: elk boek krijgt een nummer in één doorlopende reeks, kost € 10 in pre-order en gaat naar de pers zodra er 500 bestellingen zijn. In deze werkplaats staan de teksten in `boeken/`, de Typst-sjablonen voor de A6-pocket in `sjablonen/`, de scripts die er drukklare PDF's van maken in `gereedschap/` en de website voor uitvloed.nl in `site/` — alles onder versiebeheer, zodat elke wijziging bewaard blijft.
+uitvloed geeft Nederlandse klassiekers opnieuw uit als pocket, maar drukt een boek pas als genoeg lezers het hebben gereserveerd: elk boek krijgt een nummer in één doorlopende reeks, kost € 10 in pre-order en gaat naar de pers zodra er 500 bestellingen zijn. In deze werkplaats staan de teksten in `boeken/`, de Typst-sjablonen voor de A6-pocket in `sjablonen/`, de scripts die er drukklare PDF's van maken in `gereedschap/` en de website voor uitvloed.nl in `site/` — alles onder versiebeheer, zodat elke wijziging bewaard blijft.
 
 ## De website
 

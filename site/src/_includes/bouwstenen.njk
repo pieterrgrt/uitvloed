@@ -37,7 +37,7 @@
     <span class="uv-meter-goal">doel {{ doel }}</span>
   </div>
   <div class="uv-meter-track" role="progressbar" aria-label="Pre-orders voor {{ b.titel }}" aria-valuemin="0" aria-valuemax="{{ doel }}" aria-valuenow="{{ aantal }}" data-balk><div class="uv-meter-fill" style="width: {{ aantal | pct(doel) }}%" data-vulling></div></div>
-  <div class="uv-meter-note" data-notitie>{% if nog > 0 %}Nog {{ nog }} lezers en de persen draaien.{% else %}Het doel is gehaald. De persen draaien.{% endif %}</div>
+  <div class="uv-meter-note" data-notitie>{% if nog > 0 %}Nog {{ nog }} reserveringen tot het boek wordt gedrukt.{% else %}Genoeg reserveringen: het boek wordt gedrukt.{% endif %}</div>
   {%- if volledig %}
   <div class="uv-price"><strong>€ 10</strong><span>paperback · incl. verzending</span></div>
   <button type="button" class="uv-btn uv-btn-block" data-preorder="{{ b.nummer }}">Pre-order · € 10</button>
@@ -51,9 +51,9 @@
 <section class="uv-card uv-steps" id="pre-order" aria-labelledby="stappen-kop">
   <h2 class="uv-eyebrow" id="stappen-kop" style="margin:0">Zo werkt pre-order bij uitvloed</h2>
   <ol class="uv-steps-grid">
-    <li><div class="uv-step-no">1.</div><div class="uv-step-text">Reserveer je exemplaar voor een tientje.</div></li>
-    <li><div class="uv-step-no">2.</div><div class="uv-step-text">Bij {{ doel }} pre-orders drukken we de oplage — nooit meer dan nodig.</div></li>
-    <li><div class="uv-step-no">3.</div><div class="uv-step-text">Binnen drie weken op je mat, genummerd in de reeks.</div></li>
+    <li><div class="uv-step-no">1.</div><div class="uv-step-text">Reserveer een exemplaar voor € 10.</div></li>
+    <li><div class="uv-step-no">2.</div><div class="uv-step-text">Bij {{ doel }} reserveringen gaat het boek naar de drukker.</div></li>
+    <li><div class="uv-step-no">3.</div><div class="uv-step-text">Daarna sturen we het je toe.</div></li>
   </ol>
 </section>
 {%- endmacro %}

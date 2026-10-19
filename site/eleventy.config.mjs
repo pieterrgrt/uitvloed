@@ -5,7 +5,7 @@ export default function (config) {
   config.addWatchTarget('reeks.json');
   config.addWatchTarget('reeks.mjs');
 
-  config.addGlobalData('slogan', 'Nederlandse literatuur, opnieuw gedrukt — pas als jij het bestelt.');
+  config.addGlobalData('slogan', 'Nederlandse klassiekers als pocket van € 10, gedrukt zodra 500 lezers een exemplaar hebben gereserveerd.');
   config.addGlobalData('bouwjaar', new Date().getFullYear());
 
   // № 07

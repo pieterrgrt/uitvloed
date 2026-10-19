@@ -53,7 +53,7 @@
 
   Deze uitgave: uitvloed #nr(boek.nummer), #boek.jaar. \
   Gezet in EB Garamond. \
-  Gedrukt omdat genoeg lezers erom vroegen.
+  uitvloed.nl
 
   #if boek.at("isbn", default: none) != none [ISBN #boek.isbn]
 ]
@@ -144,9 +144,6 @@
   #v(1fr)
   #align(center, {
     text(font: schreefloos, weight: "bold", size: 10pt, tracking: -0.02em)[uitvloed]
-    linebreak()
-    v(1mm)
-    text(style: "italic", size: 8pt, fill: gedempt)[Nederlandse literatuur, opnieuw gedrukt — \ pas als jij het bestelt.]
   })
   #v(12mm)
   #context [#metadata(here().page()) <paginas>]
