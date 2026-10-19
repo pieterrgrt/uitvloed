@@ -1,0 +1,15 @@
+{
+  "nummer": 12,
+  "titel": "Eline Vere",
+  "auteur": "Louis Couperus",
+  "kleur": "reeks-06",
+  "gutenberg": 19563,
+  "sterfjaar": 1923,
+  "oorspronkelijk": "Eerste druk in boekvorm: Amsterdam, 1889.",
+  "hoofdstukpatroon": "^Hoofdstuk [IVXLC]+\\.$",
+  "onderkoppatroon": "^[IVXLC]+\\.$",
+  "achterflap": [
+    "Eline Vere is jong, mooi en rijk genoeg om niets te hoeven. Ze woont bij haar zuster in Den Haag, tussen tableaux vivants, opera en visites. Maar achter haar glimlach groeien verveling en zwaarmoedigheid, en elke keuze die haar leven richting zou kunnen geven, laat ze aan zich voorbijgaan.",
+    "Couperus was midden twintig toen deze Haagsche roman in 1888 als feuilleton in Het Vaderland verscheen. Het boek maakte hem in één klap bekend, en het leest nog altijd als een scherp portret van een leven dat niet op gang wil komen."
+  ]
+}

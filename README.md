@@ -1,6 +1,6 @@
 # Uitvloed
 
-uitvloed drukt Nederlandse literatuur opnieuw, maar pas als genoeg lezers erom vragen: elk boek krijgt een nummer in één doorlopende reeks, kost € 10 in pre-order en gaat naar de pers zodra er 500 bestellingen zijn. In deze werkplaats staan de teksten in `boeken/`, de Typst-sjablonen voor de A6-pocket in `sjablonen/`, de scripts die er drukklare PDF's van maken in `gereedschap/` en de website voor uitvloed.nl in `site/` — alles onder versiebeheer, zodat elke wijziging bewaard blijft.
+uitvloed geeft Nederlandse klassiekers opnieuw uit als pocket, maar drukt een boek pas als genoeg lezers het hebben gereserveerd: elk boek krijgt een nummer in één doorlopende reeks, kost € 10 in pre-order en gaat naar de pers zodra er 500 bestellingen zijn. In deze werkplaats staan de teksten in `boeken/`, de Typst-sjablonen voor de A6-pocket in `sjablonen/`, de scripts die er drukklare PDF's van maken in `gereedschap/` en de website voor uitvloed.nl in `site/` — alles onder versiebeheer, zodat elke wijziging bewaard blijft.
 
 ## De website
 
@@ -41,15 +41,28 @@ Klopt er iets niet (veld vergeten, nummer dubbel, onbekende status), dan stopt d
 
 ## Een boek zetten
 
-Van ruwe brontekst naar drukklare PDF's in drie stappen. Eenmalig: `pip install -r gereedschap/requirements.txt` (Typst als Python-pakket; de lettertypes staan in `sjablonen/letters/`).
+Van brontekst naar drukklare PDF's. Eenmalig: `pip install -r gereedschap/requirements.txt` (Typst, pypdf en de Anthropic-SDK als Python-pakketten; de lettertypes staan in `sjablonen/letters/`).
 
-1. **Brontekst neerzetten.** Maak `boeken/<titel>/` met de ruwe tekst als `bron.txt` en een `boek.json`. Staat het boek al in `site/boeken/`, dan is `{"nummer": 9}` genoeg: titel, auteur, kleur, achterflaptekst en het jaar van de eerste druk komen dan van de site. Kijk naar `boeken/_proef/` voor alle velden.
-2. **Opschonen.** `python3 gereedschap/opschonen.py boeken/<titel>` haalt paginanummers, afbreekstreepjes en losse witregels weg, krult aanhalingstekens en schrijft `tekst.txt`. Controleer `afbrekingen.txt` (heelgemaakte woorden) en corrigeer daarna in `tekst.txt` — die wordt niet meer overschreven, tenzij je `--opnieuw` meegeeft.
-3. **Zetten.** `python3 gereedschap/bouw.py boeken/<titel>` schrijft naar `boeken/<titel>/uit/`:
+1. **Brontekst ophalen.** Maak `boeken/<titel>/boek.json` met titel, auteur, nummer, kleur, `sterfjaar` en het e-booknummer als `gutenberg` (zie `boeken/max-havelaar/`). `python3 gereedschap/ophalen.py boeken/<titel>` downloadt de tekst, knipt de Gutenberg-kop en -licentie eraf en schrijft `bron.txt` en `herkomst.json`. Klopt de auteur niet met boek.json, dan stopt het. De naam Project Gutenberg hoort niet in het gedrukte boek; de herkomst staat in `herkomst.json`. Een tekst van elders (scan, DBNL) zet je zelf als `bron.txt` neer; kijk bij DBNL eerst naar de voorwaarden voor hergebruik.
+2. **Opschonen.** `python3 gereedschap/opschonen.py boeken/<titel>` haalt paginanummers, afbreekstreepjes en losse witregels weg, maakt van `--` een gedachtestreep, krult aanhalingstekens, herkent verzen en citaten aan het inspringen en schrijft `tekst.txt`. Een afgebroken samenstelling houdt haar streepje als de auteur het elders zo schrijft (gouverneur-generaal). Controleer `afbrekingen.txt` en corrigeer daarna in `tekst.txt`; die wordt niet meer overschreven, tenzij je `--opnieuw` meegeeft.
+3. **De agent.** `python3 gereedschap/agent.py boeken/<titel>` laat Claude het oordeelswerk doen: hoofdstukpatroon zoeken, titelpagina van de bron weghalen, opdracht en motto's opmaken, afbrekingen en cursief nakijken, kennelijke fouten herstellen, een concept-achterflap schrijven, en zetten en controleren tot er geen fouten meer zijn. Ontbreekt `bron.txt` of `tekst.txt`, dan doet hij stap 1 en 2 eerst. Hij werkt alleen in de boekmap, moderniseert geen spelling en blijft van rechten, ISBN, nummer, titel en auteur af. Wat hij deed en wat jij nog moet beslissen staat in `werkverslag.md`; zijn wijzigingen zie je met `git diff boeken/<titel>`. Nodig: `ANTHROPIC_API_KEY` (of `ant auth login`). Met `--stappen` begrens je het aantal rondes (standaard 80).
+4. **Zetten.** `python3 gereedschap/bouw.py boeken/<titel>` schrijft naar `boeken/<titel>/uit/`:
    - `binnenwerk.pdf` — A6 (105 × 148 mm), EB Garamond, aangevuld tot een veelvoud van vier pagina's;
    - `omslag.pdf` — achterkant, rug en voorkant met 3 mm afloop; de rugdikte volgt uit het aantal pagina's × `papierdikte_mm`.
 
    Met `--hulplijnen` komt er een omslag met snijrand en rug erbij, met `--voorbeeld` PNG's om snel te kijken.
+5. **Controleren.** `python3 gereedschap/controle.py boeken/<titel>` kijkt of het boek de drukker in mag: zijn de rechten vrij (`sterfjaar` of `rechtenvrij` in `boek.json`), hebben binnenwerk en omslag de juiste maten, past de rug bij het paginatal, zijn alle lettertypes ingebed, en staan er nog paginanummers, rechte aanhalingstekens of open cursief in `tekst.txt`. Bij een fout (✗) eindigt het script met code 1; waarschuwingen (!) zijn om na te kijken. Het vervangt de proefdruk niet: lees de PDF altijd zelf voordat er iets naar de drukker gaat.
+
+Opmaak in `tekst.txt` (het sjabloon zet die om):
+
+| in tekst.txt | wordt |
+| --- | --- |
+| `# Kop` | hoofdstuk, begint op een nieuwe pagina |
+| `## Kop` | onderdeel binnen een hoofdstuk |
+| `***` | scènewissel |
+| `> tekst` | motto, opdracht, citaat of vers, ingesprongen en kleiner; meer regels (elk met `> `) blijven onder elkaar. Vóór het eerste hoofdstuk krijgen ze een eigen pagina in het voorwerk |
+| `_cursief_` | cursief, binnen één alinea |
+| `[12]` | verwijzing naar een noot, verhoogd |
 
 Instellingen in `boek.json`:
 
@@ -58,13 +71,20 @@ Instellingen in `boek.json`:
 | `nummer` | nummer in de reeks; koppelt aan het boekbestand in `site/boeken/` |
 | `titel`, `auteur`, `kleur`, `achterflap` | overschrijven wat de site zegt (`kleur` is een token uit `uitvloed.css`, bijv. `reeks-07`) |
 | `oorspronkelijk` | regel voor het colofon, bijv. „Eerste druk: Amsterdam, 1887.”; standaard „Eerste druk: <jaar van de site>.” |
+| `sterfjaar` | jaar waarin de auteur overleed; een lijst als ook vertaler of illustrator meetellen. Rechtenvrij vanaf 1 januari van het 71e jaar daarna |
+| `rechtenvrij` | in plaats van `sterfjaar`: waarom het boek gedrukt mag worden (eigen tekst, toestemming van de erven) |
 | `isbn` | komt in colofon en op de achterkant |
+| `gutenberg` | e-booknummer bij Project Gutenberg, voor `ophalen.py` |
 | `hoofdstukpatroon` | reguliere expressie voor hoofdstukkoppen in de bron |
+| `onderkoppatroon` | reguliere expressie voor onderkoppen binnen een hoofdstuk (`## `) |
+| `streepjes`, `aanhalingstekens_krullen`, `citaten` | `false` zet het omzetten van `--`, het krullen van aanhalingstekens of het herkennen van citaten uit |
 | `weg` | lijst reguliere expressies voor regels die weg moeten (kopregels met titel of auteur) |
 | `papierdikte_mm` | dikte van één vel (twee pagina's), op te vragen bij de drukker; standaard 0,1 |
 | `rug_mm` | vaste rugdikte als de drukker die zelf opgeeft |
 
-`python3 -m unittest discover gereedschap` test het opschoonscript; GitHub draait die tests en zet het proefboek bij elke wijziging.
+`python3 -m unittest discover gereedschap` test de scripts en de gereedschappen van de agent (zonder API); GitHub draait die tests en zet en controleert het proefboek bij elke wijziging.
+
+In `boeken/` staan de eerste drie: *Max Havelaar* (№ 10), *De kleine Johannes* (№ 11) en *Eline Vere* (№ 12), elk met een `werkverslag.md` met wat er nog beslist moet worden.
 
 ## Proefdruk bestellen
 

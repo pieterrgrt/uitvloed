@@ -3,6 +3,7 @@
   "auteur": "Proef van uitvloed",
   "nummer": 0,
   "kleur": "reeks-07",
+  "rechtenvrij": "proeftekst, door uitvloed zelf geschreven",
   "oorspronkelijk": "Deze proeftekst is geschreven om de boekpijplijn te testen.",
   "weg": ["^DE PROEF$"],
   "hoofdstukpatroon": "^HOOFDSTUK [IVXLC]+$|^[IVXLC]+\\.$",

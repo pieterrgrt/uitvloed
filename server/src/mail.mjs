@@ -25,7 +25,7 @@ ${link}
 
 De link werkt één keer en vervalt na 15 minuten. Heb je dit niet aangevraagd? Dan kun je deze mail negeren.
 
-uitvloed — Nederlandse literatuur, opnieuw gedrukt.`;
+uitvloed · uitvloed.nl`;
   const html = `<div style="font-family: Georgia, serif; font-size: 17px; line-height: 1.6; color: #2b2724; max-width: 520px">
 <p style="font-family: Helvetica, Arial, sans-serif; font-weight: 700; font-size: 22px; letter-spacing: -1px; margin: 0 0 24px">uitvloed</p>
 <p>Klik op de knop om in te loggen.</p>

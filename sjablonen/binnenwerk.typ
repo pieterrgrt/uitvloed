@@ -1,8 +1,15 @@
 // Binnenwerk van een uitvloed-pocket (A6).
 // Bouwen: python3 gereedschap/bouw.py boeken/<titel>
 //
-// De tekst komt uit tekst.txt: alinea's gescheiden door een witregel,
-// hoofdstukkoppen beginnen met "# ", een scènewissel is "***".
+// De tekst komt uit tekst.txt: alinea's gescheiden door een witregel.
+//   # Kop         hoofdstuk, begint op een nieuwe pagina
+//   ## Kop        onderdeel binnen een hoofdstuk
+//   ***           scènewissel
+//   > tekst       motto, opdracht of citaat: ingesprongen en kleiner;
+//                 vóór het eerste hoofdstuk krijgen ze een eigen pagina in het voorwerk;
+//                 meer regels in één blok (elk met "> ") blijven onder elkaar staan
+//   _cursief_     cursief, binnen één alinea
+//   [12]          verwijzing naar een noot, verhoogd gezet
 
 #import "uitvloed.typ": *
 
@@ -46,10 +53,37 @@
 
   Deze uitgave: uitvloed #nr(boek.nummer), #boek.jaar. \
   Gezet in EB Garamond. \
-  Gedrukt omdat genoeg lezers erom vroegen.
+  uitvloed.nl
 
   #if boek.at("isbn", default: none) != none [ISBN #boek.isbn]
 ]
+
+// _cursief_: de stukken tussen twee lage streepjes worden cursief.
+#let opmaak(tekst) = tekst.split("_").enumerate().map(((i, deel)) => if calc.odd(i) { emph(deel) } else { deel }).join()
+
+// — Opdracht en motto's: de >-alinea's vóór het eerste hoofdstuk, op een eigen pagina —
+
+#let blokken = read(sys.inputs.tekst).split(regex("\n\s*\n")).map(b => b.trim()).filter(b => b != "")
+#let voorwerk = ()
+#while blokken.len() > 0 and blokken.first().starts-with("> ") {
+  voorwerk.push(blokken.remove(0))
+}
+#if voorwerk.len() > 0 {
+  page({
+    v(25%)
+    set par(first-line-indent: 0pt)
+    set text(style: "italic", size: 9pt)
+    for b in voorwerk {
+      // Korte regels en verzen gecentreerd, proza (een motto van een alinea) uitgevuld.
+      let proza = b.len() > 120 and not b.contains("\n")
+      set align(if proza { left } else { center })
+      set par(justify: proza)
+      block(below: 1.6em, width: 100%, opmaak(b.slice(2).replace(regex("\n> ?"), "\n")))
+    }
+  })
+  // De tekst begint altijd op een rechterpagina.
+  pagebreak(weak: true, to: "odd")
+}
 
 // — Romp —
 
@@ -59,12 +93,16 @@
   align(center, text(size: 12pt, style: "italic", weight: "regular", it.body))
   v(9mm)
 }
+#show heading.where(level: 2): it => block(above: 1.6em, below: 1.1em, width: 100%,
+  align(center, text(size: 9.5pt, weight: "regular", it.body)))
+#show regex("\[\d+\]"): it => super(it.text.slice(1, -1))
+
 
 #set page(
   header: context {
     // Geen kop op een pagina waar een hoofdstuk begint.
     let hier = here().page()
-    if query(heading).any(h => h.location().page() == hier) { return }
+    if query(heading.where(level: 1)).any(h => h.location().page() == hier) { return }
     let links = calc.even(hier)
     set align(if links { left } else { right })
     klein(text(style: "italic", if links { boek.auteur } else { boek.titel }))
@@ -73,15 +111,21 @@
 )
 #counter(page).update(1)
 
-#for blok in read(sys.inputs.tekst).split(regex("\n\s*\n")) {
-  let blok = blok.trim()
-  if blok == "" { continue }
+#for blok in blokken {
   if blok.starts-with("# ") {
-    heading(level: 1, outlined: true, blok.slice(2))
+    heading(level: 1, outlined: true, opmaak(blok.slice(2)))
+  } else if blok.starts-with("## ") {
+    heading(level: 2, outlined: false, opmaak(blok.slice(3)))
   } else if blok == "***" {
     block(above: 1.2em, below: 1.2em, width: 100%, align(center, text(tracking: 0.4em)[\* \* \*]))
+  } else if blok.starts-with("> ") {
+    block(above: 1em, below: 1em, inset: (x: 6mm), {
+      set text(size: 8.5pt)
+      set par(first-line-indent: 0pt, justify: false)
+      opmaak(blok.slice(2).replace(regex("\n> ?"), "\n"))
+    })
   } else {
-    blok
+    opmaak(blok)
     parbreak()
   }
 }
@@ -100,9 +144,6 @@
   #v(1fr)
   #align(center, {
     text(font: schreefloos, weight: "bold", size: 10pt, tracking: -0.02em)[uitvloed]
-    linebreak()
-    v(1mm)
-    text(style: "italic", size: 8pt, fill: gedempt)[Nederlandse literatuur, opnieuw gedrukt — \ pas als jij het bestelt.]
   })
   #v(12mm)
   #context [#metadata(here().page()) <paginas>]

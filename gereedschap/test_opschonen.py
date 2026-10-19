@@ -32,6 +32,13 @@ class Opschonen(unittest.TestCase):
     def test_samenstelling_houdt_streepje(self):
         self.assertEqual(schoon("Ze reisde naar Noord-\nHolland.\n"), "Ze reisde naar Noord-Holland.\n")
 
+    def test_streepje_blijft_als_de_auteur_het_zo_schrijft(self):
+        ruw = "De gouverneur-generaal kwam.\n\nToen zei de gouverneur-\ngeneraal niets.\n"
+        self.assertEqual(schoon(ruw), "De gouverneur-generaal kwam.\n\nToen zei de gouverneur-generaal niets.\n")
+
+    def test_keten_met_streepjes_blijft(self):
+        self.assertEqual(schoon("Om-den-\nwille der grap.\n"), "Om-den-wille der grap.\n")
+
     def test_gedachtestreepje_blijft(self):
         self.assertEqual(schoon("Hij zweeg —\nen ging.\n"), "Hij zweeg — en ging.\n")
 
@@ -68,6 +75,33 @@ class Opschonen(unittest.TestCase):
 
     def test_krullen_uit_te_zetten(self):
         self.assertEqual(schoon("'Ja.'\n", aanhalingstekens_krullen=False), "'Ja.'\n")
+
+    def test_dubbel_streepje_wordt_gedachtestreep(self):
+        self.assertEqual(schoon("--Haast je, Paul! zei ze.\n\nIn myn vak--ik ben makelaar.\n"),
+                         "—Haast je, Paul! zei ze.\n\nIn myn vak—ik ben makelaar.\n")
+
+    def test_streepjes_uit_te_zetten(self):
+        self.assertEqual(schoon("a--b\n", streepjes=False), "a--b\n")
+
+    def test_cursief_blijft(self):
+        self.assertEqual(schoon("Ik zeg: _waarheid_.\n"), "Ik zeg: _waarheid_.\n")
+
+    def test_onderkoppen(self):
+        ruw = "Hoofdstuk I.\n\nI.\n\nBegin.\n\nII.\n\nVerder.\n"
+        self.assertEqual(schoon(ruw, hoofdstukpatroon=r"^Hoofdstuk [IVXLC]+\.$", onderkoppatroon=r"^[IVXLC]+\.$"),
+                         "# Hoofdstuk I.\n\n## I.\n\nBegin.\n\n## II.\n\nVerder.\n")
+
+    def test_vers_blijft_in_regels(self):
+        ruw = "Hij stond op\nen zong:\n\n     't Is zoeter hier\n         te loven...\n\nEn zweeg\nlang.\n"
+        self.assertEqual(schoon(ruw), "Hij stond op en zong:\n\n> ’t Is zoeter hier\n> te loven...\n\nEn zweeg lang.\n")
+
+    def test_ingesprongen_proza_wordt_citaat(self):
+        lang = "dit is een lange regel proza die veel langer is dan een versregel ooit"
+        ruw = f"Hij nam\nde pen\nen schreef:\n\n   {lang}\n   en nog wat.\n\nEinde.\n"
+        self.assertEqual(schoon(ruw), f"Hij nam de pen en schreef:\n\n> {lang} en nog wat.\n\nEinde.\n")
+
+    def test_alles_ingesprongen_telt_niet(self):
+        self.assertEqual(schoon("  Een zin\n  loopt door.\n"), "Een zin loopt door.\n")
 
     def test_windows_regeleinden_en_formfeed(self):
         self.assertEqual(schoon("Een\r\nzin.\f2\fNieuw.\r\n"), "Een zin.\n\nNieuw.\n")

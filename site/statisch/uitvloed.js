@@ -43,7 +43,7 @@
       $('[data-aantal]', m).textContent = aantal;
       $('[data-vulling]', m).style.width = Math.min(100, Math.round((aantal / doel) * 100)) + '%';
       $('[data-balk]', m).setAttribute('aria-valuenow', aantal);
-      $('[data-notitie]', m).textContent = nog ? 'Nog ' + nog + ' lezers en de persen draaien.' : 'Het doel is gehaald. De persen draaien.';
+      $('[data-notitie]', m).textContent = nog ? 'Nog ' + nog + ' reserveringen tot het boek wordt gedrukt.' : 'Genoeg reserveringen: het boek wordt gedrukt.';
     });
   }
   if ($('[data-teller]')) {

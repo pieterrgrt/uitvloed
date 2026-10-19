@@ -66,8 +66,6 @@
     v(1fr)
     grid(columns: (1fr, auto), align: (left + bottom, right + bottom),
       {
-        text(style: "italic", size: 8.5pt, fill: gedempt)[Nederlandse literatuur, opnieuw gedrukt — pas als jij het bestelt.]
-        v(3mm)
         woordmerk(12pt)
       },
       // Ruimte voor de ISBN-streepjescode; de drukker of bouw.py vult die later in.
