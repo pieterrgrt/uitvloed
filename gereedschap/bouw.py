@@ -53,6 +53,11 @@ def gegevens(map_):
     return samen
 
 
+def rugdikte(boek, paginas):
+    """Rug in mm: de vaste rug_mm, anders aantal vellen (twee pagina's per vel) maal de papierdikte."""
+    return boek.get("rug_mm") or round(paginas / 2 * float(boek.get("papierdikte_mm", 0.1)), 1)
+
+
 def zet(sjabloon, uitvoer, invoer, formaat="pdf"):
     return typst.compile(str(SJABLONEN / sjabloon), output=str(uitvoer) if uitvoer else None,
                          root=str(WERKPLAATS), font_paths=LETTERS, ignore_system_fonts=True,
@@ -78,8 +83,7 @@ def main(argv):
                                      root=str(WERKPLAATS), font_paths=LETTERS, ignore_system_fonts=True,
                                      sys_inputs=invoer))
 
-    # Rugdikte: aantal vellen (twee pagina's per vel) maal de dikte van het papier.
-    rug = boek.get("rug_mm") or round(paginas / 2 * float(boek.get("papierdikte_mm", 0.1)), 1)
+    rug = rugdikte(boek, paginas)
     boek["rug_mm"] = rug
     invoer["boek"] = json.dumps(boek)
     zet("omslag.typ", uit / "omslag.pdf", invoer)
@@ -94,6 +98,7 @@ def main(argv):
     print(f"  binnenwerk  {uit / 'binnenwerk.pdf'}: {paginas} pagina's, 105 × 148 mm")
     print(f"  omslag      {uit / 'omslag.pdf'}: rug {rug} mm, "
           f"vel {2 * 105 + rug + 6:.1f} × {148 + 6} mm (met 3 mm afloop)")
+    print(f"Controleer daarna: python3 gereedschap/controle.py {mappen[0]}")
 
 
 if __name__ == "__main__":

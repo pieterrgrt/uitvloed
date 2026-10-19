@@ -41,7 +41,7 @@ Klopt er iets niet (veld vergeten, nummer dubbel, onbekende status), dan stopt d
 
 ## Een boek zetten
 
-Van ruwe brontekst naar drukklare PDF's in drie stappen. Eenmalig: `pip install -r gereedschap/requirements.txt` (Typst als Python-pakket; de lettertypes staan in `sjablonen/letters/`).
+Van ruwe brontekst naar drukklare PDF's in vier stappen. Eenmalig: `pip install -r gereedschap/requirements.txt` (Typst en pypdf als Python-pakketten; de lettertypes staan in `sjablonen/letters/`).
 
 1. **Brontekst neerzetten.** Maak `boeken/<titel>/` met de ruwe tekst als `bron.txt` en een `boek.json`. Staat het boek al in `site/boeken/`, dan is `{"nummer": 9}` genoeg: titel, auteur, kleur, achterflaptekst en het jaar van de eerste druk komen dan van de site. Kijk naar `boeken/_proef/` voor alle velden.
 2. **Opschonen.** `python3 gereedschap/opschonen.py boeken/<titel>` haalt paginanummers, afbreekstreepjes en losse witregels weg, krult aanhalingstekens en schrijft `tekst.txt`. Controleer `afbrekingen.txt` (heelgemaakte woorden) en corrigeer daarna in `tekst.txt` — die wordt niet meer overschreven, tenzij je `--opnieuw` meegeeft.
@@ -50,6 +50,7 @@ Van ruwe brontekst naar drukklare PDF's in drie stappen. Eenmalig: `pip install 
    - `omslag.pdf` — achterkant, rug en voorkant met 3 mm afloop; de rugdikte volgt uit het aantal pagina's × `papierdikte_mm`.
 
    Met `--hulplijnen` komt er een omslag met snijrand en rug erbij, met `--voorbeeld` PNG's om snel te kijken.
+4. **Controleren.** `python3 gereedschap/controle.py boeken/<titel>` kijkt of het boek de drukker in mag: zijn de rechten vrij (`sterfjaar` of `rechtenvrij` in `boek.json`), hebben binnenwerk en omslag de juiste maten, past de rug bij het paginatal, zijn alle lettertypes ingebed, en staan er nog paginanummers of rechte aanhalingstekens in `tekst.txt`. Bij een fout (✗) eindigt het script met code 1; waarschuwingen (!) zijn om na te kijken. Het vervangt de proefdruk niet.
 
 Instellingen in `boek.json`:
 
@@ -58,13 +59,15 @@ Instellingen in `boek.json`:
 | `nummer` | nummer in de reeks; koppelt aan het boekbestand in `site/boeken/` |
 | `titel`, `auteur`, `kleur`, `achterflap` | overschrijven wat de site zegt (`kleur` is een token uit `uitvloed.css`, bijv. `reeks-07`) |
 | `oorspronkelijk` | regel voor het colofon, bijv. „Eerste druk: Amsterdam, 1887.”; standaard „Eerste druk: <jaar van de site>.” |
+| `sterfjaar` | jaar waarin de auteur overleed; een lijst als ook vertaler of illustrator meetellen. Rechtenvrij vanaf 1 januari van het 71e jaar daarna |
+| `rechtenvrij` | in plaats van `sterfjaar`: waarom het boek gedrukt mag worden (eigen tekst, toestemming van de erven) |
 | `isbn` | komt in colofon en op de achterkant |
 | `hoofdstukpatroon` | reguliere expressie voor hoofdstukkoppen in de bron |
 | `weg` | lijst reguliere expressies voor regels die weg moeten (kopregels met titel of auteur) |
 | `papierdikte_mm` | dikte van één vel (twee pagina's), op te vragen bij de drukker; standaard 0,1 |
 | `rug_mm` | vaste rugdikte als de drukker die zelf opgeeft |
 
-`python3 -m unittest discover gereedschap` test het opschoonscript; GitHub draait die tests en zet het proefboek bij elke wijziging.
+`python3 -m unittest discover gereedschap` test het opschoon- en controlescript; GitHub draait die tests en zet en controleert het proefboek bij elke wijziging.
 
 ## Proefdruk bestellen
 
