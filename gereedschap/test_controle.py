@@ -69,7 +69,10 @@ class Tekst(unittest.TestCase):
         self.assertEqual(len(meldingen), 2)
 
     def test_schone_tekst(self):
-        self.assertEqual(tekst("# I\n\n‘Ja,’ zei hij.\n"), [])
+        self.assertEqual(tekst("# I\n\n‘Ja,’ zei hij _zacht_.\n"), [])
+
+    def test_cursief_dat_niet_sluit(self):
+        self.assertEqual(len(tekst("Een _open zin.\n\nGoed _dicht_.\n")), 1)
 
 
 if __name__ == "__main__":

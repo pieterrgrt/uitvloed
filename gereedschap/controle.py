@@ -10,7 +10,8 @@ Draai eerst gereedschap/bouw.py. Het script kijkt naar:
                en de rug past bij het paginatal van het binnenwerk;
 - lettertypes: alle lettertypes in beide PDF's ingebed;
 - tekst.txt:   wat het opschonen kan hebben laten staan (paginanummers, rechte
-               aanhalingstekens, zachte afbreekstreepjes).
+               aanhalingstekens, zachte afbreekstreepjes) en alinea's met een
+               oneven aantal _ (cursief dat niet sluit).
 
 Fouten (✗) houden het boek tegen; waarschuwingen (!) zijn om na te kijken.
 Komt er een fout uit, dan eindigt het script met code 1.
@@ -140,6 +141,10 @@ def tekst(inhoud):
     if nummers:
         meldingen.append(waarschuwing(f"tekst.txt: {len(nummers)} alinea('s) met alleen een getal "
                                       f"(paginanummer?), bijv. {nummers[0].strip()}"))
+    open_cursief = [a for a in alineas if a.count("_") % 2]
+    if open_cursief:
+        meldingen.append(waarschuwing(f"tekst.txt: {len(open_cursief)} alinea('s) met cursief dat niet sluit "
+                                      f"(oneven aantal _), bijv. „{open_cursief[0][:60]}”"))
     for teken, naam in (("'", "rechte enkele aanhalingstekens"), ('"', "rechte dubbele aanhalingstekens"),
                         ("­", "zachte afbreekstreepjes"), ("¬", "afbreektekens ¬")):
         if (aantal := inhoud.count(teken)):

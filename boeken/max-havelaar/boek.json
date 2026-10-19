@@ -1,0 +1,14 @@
+{
+  "nummer": 10,
+  "titel": "Max Havelaar",
+  "auteur": "Multatuli",
+  "kleur": "reeks-04",
+  "gutenberg": 11024,
+  "sterfjaar": 1887,
+  "oorspronkelijk": "Eerste druk: Amsterdam, 1860.",
+  "hoofdstukpatroon": "^[A-Z]+ HOOFDSTUK(\\[\\d+\\])?$|^AANTEEKENINGEN EN OPHELDERINGEN$",
+  "achterflap": [
+    "Batavus Droogstoppel, makelaar in koffie aan de Lauriergracht nummer 37, krijgt van een oude schoolkameraad een pak papieren. Hij wil er een nuttig boek over de koffiehandel van maken. Maar de papieren vertellen het verhaal van Max Havelaar, assistent-resident van Lebak op Java, die het opneemt voor de Javaan tegen de uitbuiting door inlandse hoofden en het Nederlandse bestuur.",
+    "Multatuli schreef het boek in 1859 in een Brusselse herberg, woedend en geestig tegelijk. Het veranderde hoe Nederland naar zijn kolonie keek, en het leest nog net zo fel als toen."
+  ]
+}
